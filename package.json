@@ -2,12 +2,12 @@
   "name": "module10-challenge",
   "version": "1.0.0",
   "type": "module",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "SQL": "psql -U postgres -c \"\\i db/schema.sql\" -c \"\\i db/seeds.sql\"",
-    "build": "npm run SQL && tsc",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && node dist/server.js"
+    "start": "npm run build && node dist/index.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
