@@ -1,8 +1,6 @@
 import { pool } from '../connection.js';
-import { QueryResult } from 'pg';
-
 class Employee {
-    static async viewAllEmployees(): Promise<void> {
+    static async viewAllEmployees() {
         const sql = `SELECT 
             employee.id, 
             employee.first_name, 
@@ -18,9 +16,8 @@ class Employee {
                 ON role.department_id = department.id
             LEFT JOIN employee AS manager
                 ON employee.manager_id = manager.id`;
-        
         return new Promise((resolve, reject) => {
-            pool.query(sql, (err: Error, result: QueryResult) => {
+            pool.query(sql, (err, result) => {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -32,5 +29,4 @@ class Employee {
         });
     }
 }
-
 export default Employee;
