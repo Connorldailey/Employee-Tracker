@@ -1,6 +1,7 @@
 import inquirer from 'inquirer';
-import Employee from './Employee.js';
 import Department from './Department.js';
+import Role from './Role.js';
+import Employee from './Employee.js';
 class Cli {
     async startCli() {
         const { action } = await inquirer.prompt([
@@ -30,6 +31,7 @@ class Cli {
             case 'Update Employee Role':
                 break;
             case 'View All Roles':
+                await Role.viewAllRoles();
                 break;
             case 'Add Role':
                 break;
@@ -37,6 +39,7 @@ class Cli {
                 await Department.viewAllDepartments();
                 break;
             case 'Add Department':
+                await this.addDepartment();
                 break;
             default:
                 process.exit(0);
@@ -59,9 +62,19 @@ class Cli {
             {
                 type: 'input',
                 name: 'role',
-                message: "Enter the employee's role"
+                message: "Enter the employee's role",
             }
         ]);
+    }
+    async addDepartment() {
+        const { department } = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'department',
+                message: 'Enter the name of the department',
+            }
+        ]);
+        await Department.addDepartment(department);
     }
 }
 export default Cli;
