@@ -1,5 +1,6 @@
 import inquirer from 'inquirer';
-import Employee from './Employee.js'
+import Employee from './Employee.js';
+import Department from './Department.js';
 
 class Cli {
     async startCli(): Promise<void> {
@@ -34,6 +35,7 @@ class Cli {
             case 'Add Role':
                 break;
             case 'View All Departments':
+                await Department.viewAllDepartments();
                 break;
             case 'Add Department':
                 break;    
