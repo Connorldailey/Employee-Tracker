@@ -28,7 +28,7 @@ class Role {
 
     static async addRole(title: string, salary: number, department_id: number): Promise<void> {
         const sql = `INSERT INTO role (title, salary, department_id) VALUES
-            ($1), ($2), ($3)`;
+            ($1, $2, $3)`;
         const params = [title, salary, department_id];
 
         return new Promise((resolve, reject) => {

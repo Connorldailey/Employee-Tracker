@@ -34,6 +34,7 @@ class Cli {
                 await Role.viewAllRoles();
                 break;
             case 'Add Role':
+                await this.addRole();
                 break;
             case 'View All Departments':
                 await Department.viewAllDepartments();
@@ -65,6 +66,28 @@ class Cli {
                 message: "Enter the employee's role",
             }
         ]);
+    }
+    async addRole() {
+        const departments = await Department.getAllDepartments();
+        const { title, salary, department_id } = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'title',
+                message: 'Enter the role title',
+            },
+            {
+                type: 'input',
+                name: 'salary',
+                message: 'Enter the salary for this role',
+            },
+            {
+                type: 'list',
+                name: 'department_id',
+                message: 'Select the department for this role',
+                choices: departments.map(dept => ({ name: dept.name, value: dept.id })),
+            }
+        ]);
+        await Role.addRole(title, salary, department_id);
     }
     async addDepartment() {
         const { department } = await inquirer.prompt([

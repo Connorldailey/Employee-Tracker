@@ -3,20 +3,23 @@ import { QueryResult } from 'pg';
 
 class Department {
 
-    static async viewAllDepartments(): Promise<void> {
+    static async getAllDepartments(): Promise<any[]> {
         const sql = `SELECT id, name FROM department`;
 
         return new Promise((resolve, reject) => {
             pool.query(sql, (err: Error, result: QueryResult) => {
                 if (err) {
-                    console.error('Error fetching deprtments:', err.message);
+                    console.error('Error fetching departments:', err.message);
                     return reject(err);
                 }
-                const { rows } = result;
-                console.table(rows);
-                resolve();
+                resolve(result.rows);
             });
         });
+    }
+
+    static async viewAllDepartments(): Promise<void> {
+        const rows = await this.getAllDepartments();
+        console.table(rows);
     }
 
     static async addDepartment(department: string): Promise<void> {

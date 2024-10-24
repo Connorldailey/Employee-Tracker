@@ -1,18 +1,20 @@
 import { pool } from '../connection.js';
 class Department {
-    static async viewAllDepartments() {
+    static async getAllDepartments() {
         const sql = `SELECT id, name FROM department`;
         return new Promise((resolve, reject) => {
             pool.query(sql, (err, result) => {
                 if (err) {
-                    console.error('Error fetching deprtments:', err.message);
+                    console.error('Error fetching departments:', err.message);
                     return reject(err);
                 }
-                const { rows } = result;
-                console.table(rows);
-                resolve();
+                resolve(result.rows);
             });
         });
+    }
+    static async viewAllDepartments() {
+        const rows = await this.getAllDepartments();
+        console.table(rows);
     }
     static async addDepartment(department) {
         const sql = `INSERT INTO department (name) VALUES ($1)`;
@@ -20,7 +22,7 @@ class Department {
         return new Promise((resolve, reject) => {
             pool.query(sql, params, (err, _result) => {
                 if (err) {
-                    console.error('Error adding department:', err.message);
+                    console.error('Failed to add department:', err.message);
                     return reject(err);
                 }
                 console.log('Department successfully added');

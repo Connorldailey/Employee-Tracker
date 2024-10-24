@@ -19,8 +19,8 @@ class Employee {
         return new Promise((resolve, reject) => {
             pool.query(sql, (err, result) => {
                 if (err) {
-                    console.log(err);
-                    reject(err);
+                    console.error('Error fetching employees:', err.message);
+                    return reject(err);
                 }
                 const { rows } = result;
                 console.table(rows);
@@ -35,10 +35,10 @@ class Employee {
         return new Promise((resolve, reject) => {
             pool.query(sql, params, (err, _result) => {
                 if (err) {
-                    console.log(err);
-                    reject(err);
+                    console.error('Failed to add employee:', err.message);
+                    return reject(err);
                 }
-                console.log('User succesfully added');
+                console.log('Employee succesfully added');
                 resolve();
             });
         });
