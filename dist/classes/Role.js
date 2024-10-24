@@ -1,6 +1,6 @@
 import { pool } from '../connection.js';
 class Role {
-    static async viewAllRoles() {
+    static async getAllRoles() {
         const sql = `SELECT 
                 role.id, 
                 role.title, 
@@ -15,11 +15,13 @@ class Role {
                     console.error('Error fetching roles:', err.message);
                     return reject(err);
                 }
-                const { rows } = result;
-                console.table(rows);
-                resolve();
+                resolve(result.rows);
             });
         });
+    }
+    static async viewAllRoles() {
+        const rows = await this.getAllRoles();
+        console.table(rows);
     }
     static async addRole(title, salary, department_id) {
         const sql = `INSERT INTO role (title, salary, department_id) VALUES

@@ -1,6 +1,6 @@
 import { pool } from '../connection.js';
 class Employee {
-    static async viewAllEmployees() {
+    static async getAllEmployees() {
         const sql = `SELECT 
             employee.id, 
             employee.first_name, 
@@ -22,9 +22,7 @@ class Employee {
                     console.error('Error fetching employees:', err.message);
                     return reject(err);
                 }
-                const { rows } = result;
-                console.table(rows);
-                resolve();
+                resolve(result.rows);
             });
         });
     }

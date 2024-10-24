@@ -24,21 +24,24 @@ class Cli {
         ]);
         switch (action) {
             case 'View All Employees':
-                await Employee.viewAllEmployees();
+                const employees = await Employee.getAllEmployees();
+                console.table(employees);
                 break;
             case 'Add Employee':
-                this.addEmployee();
+                await this.addEmployee();
                 break;
             case 'Update Employee Role':
                 break;
             case 'View All Roles':
-                await Role.viewAllRoles();
+                const roles = await Role.getAllRoles();
+                console.table(roles);
                 break;
             case 'Add Role':
                 await this.addRole();
                 break;
             case 'View All Departments':
-                await Department.viewAllDepartments();
+                const departments = await Department.getAllDepartments();
+                console.table(departments);
                 break;
             case 'Add Department':
                 await this.addDepartment();

@@ -23,7 +23,8 @@ class Cli {
         ]);
         switch (action) {
             case 'View All Employees':
-                await Employee.viewAllEmployees();
+                const employees = await Employee.getAllEmployees();
+                console.table(employees);
                 break;
             case 'Add Employee':
                 this.addEmployee();

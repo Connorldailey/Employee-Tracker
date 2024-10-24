@@ -3,7 +3,7 @@ import { QueryResult } from 'pg';
 
 class Role {
 
-    static async viewAllRoles(): Promise<void> {
+    static async getAllRoles(): Promise<any[]> {
         const sql = `SELECT 
                 role.id, 
                 role.title, 
@@ -19,9 +19,7 @@ class Role {
                     console.error('Error fetching roles:', err.message);
                     return reject(err);
                 }
-                const { rows } = result;
-                console.table(rows);
-                resolve();
+                resolve(result.rows);
             });
         });
     }
