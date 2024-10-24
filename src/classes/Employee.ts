@@ -2,6 +2,7 @@ import { pool } from '../connection.js';
 import { QueryResult } from 'pg';
 
 class Employee {
+
     static async viewAllEmployees(): Promise<void> {
         const sql = `SELECT 
             employee.id, 
@@ -22,8 +23,8 @@ class Employee {
         return new Promise((resolve, reject) => {
             pool.query(sql, (err: Error, result: QueryResult) => {
                 if (err) {
-                    console.log(err);
-                    reject(err);
+                    console.error('Error fetching employees:', err.message);
+                    return reject(err);
                 }
                 const { rows } = result;
                 console.table(rows);
@@ -32,7 +33,7 @@ class Employee {
         });
     }
 
-    static async addEmployee(first_name: string, last_name: string, role_id: number, manager_id: number): Promise<void> {
+    static async addEmployee(first_name: string, last_name: string, role_id: number, manager_id?: number | null): Promise<void> {
         const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) 
             VALUES ($1, $2, $3, $4);`
         const params = [first_name, last_name, role_id, manager_id];
@@ -40,14 +41,15 @@ class Employee {
         return new Promise((resolve, reject) => {
             pool.query(sql, params, (err: Error, _result: QueryResult) => {
                 if (err) {
-                    console.log(err);
-                    reject(err);
+                    console.error('Failed to add employee:', err.message);
+                    return reject(err);
                 }
-                console.log('User succesfully added');
+                console.log('Employee succesfully added');
                 resolve();
             });
         });
     }
+
 }
 
 export default Employee;

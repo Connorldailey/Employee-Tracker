@@ -26,7 +26,7 @@ class Department {
         return new Promise((resolve, reject) => {
             pool.query(sql, params, (err: Error, _result: QueryResult) => {
                 if (err) {
-                    console.error('Error adding department:', err.message);
+                    console.error('Failed to add department:', err.message);
                     return reject(err);
                 }
                 console.log('Department successfully added');
