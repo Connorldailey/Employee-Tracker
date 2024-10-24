@@ -48,6 +48,22 @@ class Employee {
         });
     }
 
+    static async updateEmployeeRole(employee_id: number, role_id: number): Promise<void> {
+        const sql = `UPDATE employee SET role_id = $2 WHERE id = $1`;
+        const params = [employee_id, role_id];
+
+        return new Promise((resolve, reject) => {
+            pool.query(sql, params, (err: Error, _result: QueryResult) => {
+                if (err) {
+                    console.error('Failed to update employee role:', err.message);
+                    return reject(err);
+                }
+                console.log('Employee role successfully updated');
+                resolve();
+            });
+        });
+    }
+
 }
 
 export default Employee;

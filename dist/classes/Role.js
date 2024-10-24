@@ -19,10 +19,6 @@ class Role {
             });
         });
     }
-    static async viewAllRoles() {
-        const rows = await this.getAllRoles();
-        console.table(rows);
-    }
     static async addRole(title, salary, department_id) {
         const sql = `INSERT INTO role (title, salary, department_id) VALUES
             ($1, $2, $3)`;

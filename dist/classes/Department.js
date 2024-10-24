@@ -12,10 +12,6 @@ class Department {
             });
         });
     }
-    static async viewAllDepartments() {
-        const rows = await this.getAllDepartments();
-        console.table(rows);
-    }
     static async addDepartment(department) {
         const sql = `INSERT INTO department (name) VALUES ($1)`;
         const params = [department];

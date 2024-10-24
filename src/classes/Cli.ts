@@ -31,6 +31,7 @@ class Cli {
                 await this.addEmployee();
                 break;
             case 'Update Employee Role':
+                await this.updateEmployeeRole();
                 break;
             case 'View All Roles':
                 const roles = await Role.getAllRoles();
@@ -50,11 +51,14 @@ class Cli {
                 process.exit(0);
         }
         // Restart the Cli after the action is complete
-        this.startCli();
+        return this.startCli();
     }
 
     async addEmployee(): Promise<void> {
-        await inquirer.prompt([
+        const roles = await Role.getAllRoles();
+        const employees = await Employee.getAllEmployees();
+
+        const { first_name, last_name, role_id, manager_id } = await inquirer.prompt([
             {
                 type: 'input',
                 name: 'first_name',
@@ -66,11 +70,52 @@ class Cli {
                 message: "Enter the employee's last name",
             },
             {
-                type: 'input',
-                name: 'role',
+                type: 'list',
+                name: 'role_id',
                 message: "Enter the employee's role",
+                choices: roles.map(role => ({ name: role.title, value: role.id})),
+            },
+            {
+                type: 'list',
+                name: 'manager_id',
+                message: "Enter the employee's manager",
+                choices: [
+                    { name: 'None', value: null},
+                    ...employees.map(employee => ({
+                        name: `${employee.first_name} ${employee.last_name}`,
+                        value: employee.id,
+                    }))
+                ],
             }
         ]);
+        await Employee.addEmployee(first_name, last_name, role_id, manager_id);
+    }
+
+    async updateEmployeeRole(): Promise<void> {
+        const employees = await Employee.getAllEmployees();
+        const roles = await Role.getAllRoles();
+
+        const { employee_id, role_id } = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'employee_id',
+                message: "Which employee's role do you want to update?",
+                choices: employees.map(employee => ({ 
+                    name: `${employee.first_name} ${employee.last_name}`,
+                    value: employee.id,
+                }))
+            },
+            {
+                type: 'list',
+                name: 'role_id',
+                message: 'Which role do you want to assign the selected employee?',
+                choices: roles.map(role => ({
+                    name: role.title,
+                    value: role.id,
+                }))
+            }
+        ]);
+        await Employee.updateEmployeeRole(employee_id, role_id);
     }
 
     async addRole(): Promise<void> {
