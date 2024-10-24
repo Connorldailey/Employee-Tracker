@@ -31,6 +31,23 @@ class Employee {
             });
         });
     }
+
+    static async addEmployee(first_name: string, last_name: string, role_id: number, manager_id: number): Promise<void> {
+        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) 
+            VALUES ($1, $2, $3, $4);`
+        const params = [first_name, last_name, role_id, manager_id];
+
+        return new Promise((resolve, reject) => {
+            pool.query(sql, params, (err: Error, _result: QueryResult) => {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                console.log('User succesfully added');
+                resolve();
+            });
+        });
+    }
 }
 
 export default Employee;

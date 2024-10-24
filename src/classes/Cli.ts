@@ -25,6 +25,7 @@ class Cli {
                 await Employee.viewAllEmployees();
                 break;
             case 'Add Employee':
+                this.addEmployee();
                 break;
             case 'Update Employee Role':
                 break;
@@ -41,6 +42,26 @@ class Cli {
         }
         // Restart the Cli after the action is complete
         this.startCli();
+    }
+
+    async addEmployee(): Promise<void> {
+        await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'first_name',
+                message: "Enter the employee's first name",
+            },
+            {
+                type: 'input',
+                name: 'last_name',
+                message: "Enter the employee's last name",
+            },
+            {
+                type: 'input',
+                name: 'role',
+                message: "Enter the employee's role"
+            }
+        ]);
     }
 }
 
