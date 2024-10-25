@@ -118,6 +118,20 @@ class Employee {
             });
         });
     }
+    static async deleteEmployee(employee_id) {
+        const sql = `DELETE FROM employee WHERE id = $1`;
+        const params = [employee_id];
+        return new Promise((resolve, reject) => {
+            pool.query(sql, params, (err, _result) => {
+                if (err) {
+                    console.error('Failed to delete employee', err.message);
+                    return reject(err);
+                }
+                console.log('Employee successfully deleted');
+                resolve();
+            });
+        });
+    }
     static async updateEmployeeRole(employee_id, role_id) {
         const sql = `UPDATE employee SET role_id = $2 WHERE id = $1`;
         const params = [employee_id, role_id];

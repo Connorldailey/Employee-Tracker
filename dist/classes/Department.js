@@ -26,5 +26,19 @@ class Department {
             });
         });
     }
+    static async deleteDepartment(department_id) {
+        const sql = `DELETE FROM department WHERE id = $1`;
+        const params = [department_id];
+        return new Promise((resolve, reject) => {
+            pool.query(sql, params, (err, _result) => {
+                if (err) {
+                    console.error('Failed to delete department', err.message);
+                    return reject(err);
+                }
+                console.log('Department successfully deleted');
+                resolve();
+            });
+        });
+    }
 }
 export default Department;

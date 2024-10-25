@@ -34,5 +34,19 @@ class Role {
             });
         });
     }
+    static async deleteRole(role_id) {
+        const sql = `DELETE FROM role WHERE id = $1`;
+        const params = [role_id];
+        return new Promise((resolve, reject) => {
+            pool.query(sql, params, (err, _result) => {
+                if (err) {
+                    console.error('Failed to delete role', err.message);
+                    return reject(err);
+                }
+                console.log('Role successfully deleted');
+                resolve();
+            });
+        });
+    }
 }
 export default Role;

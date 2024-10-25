@@ -33,6 +33,22 @@ class Department {
         });
     }
 
+    static async deleteDepartment(department_id: number): Promise<void> {
+        const sql = `DELETE FROM department WHERE id = $1`;
+        const params = [department_id];
+
+        return new Promise((resolve, reject) => {
+            pool.query(sql, params, (err: Error, _result: QueryResult) => {
+                if (err) {
+                    console.error('Failed to delete department', err.message);
+                    return reject(err);
+                }
+                console.log('Department successfully deleted');
+                resolve();
+            });
+        });
+    }
+
 }
 
 export default Department;

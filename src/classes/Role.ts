@@ -41,6 +41,22 @@ class Role {
         });
     }
 
+    static async deleteRole(role_id: number): Promise<void> {
+        const sql = `DELETE FROM role WHERE id = $1`;
+        const params = [role_id];
+
+        return new Promise((resolve, reject) => {
+            pool.query(sql, params, (err: Error, _result: QueryResult) => {
+                if (err) {
+                    console.error('Failed to delete role', err.message);
+                    return reject(err);
+                }
+                console.log('Role successfully deleted');
+                resolve();
+            });
+        });
+    }
+
 }
 
 export default Role;
