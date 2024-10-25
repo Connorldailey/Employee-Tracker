@@ -40,5 +40,23 @@ class Department {
             });
         });
     }
+    static async getTotalUtilizedBudget() {
+        const sql = `SELECT 
+                        department.name AS department,
+                        SUM(role.salary) AS utilized_budget
+                    FROM department
+                    JOIN role
+                        ON role.department_id = department.id
+                    GROUP BY department.name`;
+        return new Promise((resolve, reject) => {
+            pool.query(sql, (err, result) => {
+                if (err) {
+                    console.error('Failed to get total utilized budget by department:', err.message);
+                    return reject(err);
+                }
+                resolve(result.rows);
+            });
+        });
+    }
 }
 export default Department;

@@ -77,3 +77,12 @@ LEFT JOIN employee AS manager
     ON employee.manager_id = manager.id
 WHERE role.department_id = $1
 ORDER BY employee.last_name;
+
+-- View total utilized budget of a department
+SELECT 
+    department.name AS department,
+    SUM(role.salary) AS utilized_budget
+FROM department
+JOIN role
+    ON role.department_id = department.id
+GROUP BY department.name;

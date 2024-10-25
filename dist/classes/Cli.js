@@ -2,7 +2,21 @@ import inquirer from 'inquirer';
 import Department from './Department.js';
 import Role from './Role.js';
 import Employee from './Employee.js';
+import figlet from 'figlet';
 class Cli {
+    async generateArt() {
+        return new Promise((resolve, reject) => {
+            figlet('Employee Manager', (err, data) => {
+                if (err) {
+                    console.error('Error generating ASCII art:', err);
+                    return reject(err);
+                }
+                console.log(data);
+                console.log('\n');
+                resolve();
+            });
+        });
+    }
     async startCli() {
         const { action } = await inquirer.prompt([
             {
@@ -23,6 +37,7 @@ class Cli {
                     'View All Departments',
                     'Add Department',
                     'Delete Department',
+                    'View Utilized Budget By Department',
                     'Exit'
                 ]
             }
@@ -69,6 +84,10 @@ class Cli {
                 break;
             case 'Delete Department':
                 await this.deleteDepartment();
+                break;
+            case 'View Utilized Budget By Department':
+                const utilzedBudgetByDepartment = await Department.getTotalUtilizedBudget();
+                console.table(utilzedBudgetByDepartment);
                 break;
             default:
                 process.exit(0);
