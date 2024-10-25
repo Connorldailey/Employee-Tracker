@@ -13,6 +13,7 @@ class Cli {
                     'View All Employees',
                     'Add Employee',
                     'Update Employee Role',
+                    'Update Employee Manager',
                     'View All Roles',
                     'Add Role',
                     'View All Departments',
@@ -31,6 +32,9 @@ class Cli {
                 break;
             case 'Update Employee Role':
                 await this.updateEmployeeRole();
+                break;
+            case 'Update Employee Manager':
+                await this.updateEmployeeManager();
                 break;
             case 'View All Roles':
                 const roles = await Role.getAllRoles();
@@ -111,6 +115,35 @@ class Cli {
             }
         ]);
         await Employee.updateEmployeeRole(employee_id, role_id);
+    }
+    async updateEmployeeManager() {
+        const employees = await Employee.getAllEmployees();
+        const { employee_id } = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'employee_id',
+                message: "Which employee's manager would you like to update?",
+                choices: employees.map(employee => ({
+                    name: `${employee.first_name} ${employee.last_name}`,
+                    value: employee.id,
+                }))
+            }
+        ]);
+        const { manager_id } = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'manager_id',
+                message: "Which manager do you want to assign the selected employee?",
+                choices: [
+                    { name: 'None', value: null },
+                    ...employees.filter(employee => employee.id !== employee_id).map(employee => ({
+                        name: `${employee.first_name} ${employee.last_name}`,
+                        value: employee.id
+                    }))
+                ]
+            }
+        ]);
+        await Employee.updateEmployeeManager(employee_id, manager_id);
     }
     async addRole() {
         const departments = await Department.getAllDepartments();

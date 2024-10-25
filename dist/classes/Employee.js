@@ -55,5 +55,19 @@ class Employee {
             });
         });
     }
+    static async updateEmployeeManager(employee_id, manager_id) {
+        const sql = `UPDATE employee SET manager_id = $2 WHERE id = $1`;
+        const params = [employee_id, manager_id];
+        return new Promise((resolve, reject) => {
+            pool.query(sql, params, (err, _result) => {
+                if (err) {
+                    console.error('Failed to update employee manager:', err.message);
+                    return reject(err);
+                }
+                console.log('Employee manager successfully updated');
+                resolve();
+            });
+        });
+    }
 }
 export default Employee;
