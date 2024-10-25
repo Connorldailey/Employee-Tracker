@@ -11,6 +11,8 @@ class Cli {
                 message: 'What would you like to do?',
                 choices: [
                     'View All Employees',
+                    'View Employees By Manager',
+                    'View Employees By Department',
                     'Add Employee',
                     'Update Employee Role',
                     'Update Employee Manager',
@@ -26,6 +28,12 @@ class Cli {
             case 'View All Employees':
                 const employees = await Employee.getAllEmployees();
                 console.table(employees);
+                break;
+            case 'View Employees By Manager':
+                await this.viewEmployeesByManager();
+                break;
+            case 'View Employees By Department':
+                await this.viewEmployeesByDepartment();
                 break;
             case 'Add Employee':
                 await this.addEmployee();
@@ -55,6 +63,38 @@ class Cli {
         }
         // Restart the Cli after the action is complete
         return this.startCli();
+    }
+    async viewEmployeesByManager() {
+        const managers = await Employee.getUniqueManagers();
+        const { manager_id } = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'manager_id',
+                message: 'Select a manager to view their employees',
+                choices: managers.map(manager => ({
+                    name: `${manager.first_name} ${manager.last_name}`,
+                    value: manager.id,
+                }))
+            }
+        ]);
+        const employeesByManager = await Employee.getEmployeesByManager(manager_id);
+        console.table(employeesByManager);
+    }
+    async viewEmployeesByDepartment() {
+        const departments = await Department.getAllDepartments();
+        const { department_id } = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'department_id',
+                message: 'Select a department to view its employees',
+                choices: departments.map(department => ({
+                    name: department.name,
+                    value: department.id,
+                }))
+            }
+        ]);
+        const employeesByDepartment = await Employee.getEmployeesByDepartment(department_id);
+        console.table(employeesByDepartment);
     }
     async addEmployee() {
         const roles = await Role.getAllRoles();

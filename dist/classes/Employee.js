@@ -26,6 +26,83 @@ class Employee {
             });
         });
     }
+    static async getEmployeesByManager(manager_id) {
+        const sql = `SELECT
+                        employee.id,
+                        employee.first_name,
+                        employee.last_name,
+                        role.title,
+                        department.name AS department,
+                        role.salary,
+                        CONCAT(manager.first_name, ' ', manager.last_name) AS manager
+                    FROM employee
+                    JOIN role
+                        ON employee.role_id = role.id
+                    JOIN department
+                        ON role.department_id = department.id
+                    LEFT JOIN employee AS manager
+                        ON employee.manager_id = manager.id
+                    WHERE employee.manager_id = $1
+                    ORDER BY employee.last_name`;
+        const params = [manager_id];
+        return new Promise((resolve, reject) => {
+            pool.query(sql, params, (err, result) => {
+                if (err) {
+                    console.error('Error fetching employees by manager:', err.message);
+                    return reject(err);
+                }
+                resolve(result.rows);
+            });
+        });
+    }
+    static async getUniqueManagers() {
+        const sql = `SELECT DISTINCT
+                        manager.id,
+                        manager.first_name,
+                        manager.last_name
+                    FROM employee
+                    JOIN employee AS manager
+                        ON employee.manager_id = manager.id
+                    ORDER BY manager.last_name`;
+        return new Promise((resolve, reject) => {
+            pool.query(sql, (err, result) => {
+                if (err) {
+                    console.error('Error fetching unique managers:', err.message);
+                    return reject(err);
+                }
+                resolve(result.rows);
+            });
+        });
+    }
+    static async getEmployeesByDepartment(department_id) {
+        const sql = `SELECT
+                        employee.id,
+                        employee.first_name,
+                        employee.last_name,
+                        role.title,
+                        department.name AS department,
+                        role.salary,
+                        CONCAT(manager.first_name, ' ', manager.last_name) AS manager
+                    FROM employee
+                    JOIN role
+                        ON employee.role_id = role.id
+                    JOIN department
+                        ON role.department_id = department.id
+                    LEFT JOIN employee AS manager
+                        ON employee.manager_id = manager.id
+                    WHERE role.department_id = $1
+                    ORDER BY employee.last_name`;
+        const params = [department_id];
+        return new Promise((resolve, reject) => {
+            pool.query(sql, params, (err, result) => {
+                if (err) {
+                    console.error('Error fetching employees by department:', err.message);
+                    return reject(err);
+                }
+                resolve(result.rows);
+            });
+        });
+    }
     static async addEmployee(first_name, last_name, role_id, manager_id) {
         const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) 
             VALUES ($1, $2, $3, $4);`;
