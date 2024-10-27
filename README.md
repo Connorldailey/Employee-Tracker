@@ -72,6 +72,10 @@ Once the installation steps are complete, follow these instructions to start and
 
 **Note:** Any changes made during your session are saved directly to the database, ensuring all updates remain intact for future sessions. However, running the SQL initialization and seeding, `npm run SQL`, deletes and recreates the database. This should only be used for testing and development purposes.
 
+[Watch the walkthrough video](https://drive.google.com/file/d/1ITglPrjVI0yOwkqhQVAOC1Oms5pLjpqU/view?usp=sharing)
+
+![Main Menu](./assets/images/screenshot.png)
+
 ## Credits 
 
 Materials and guidance from The Ohio State University Coding Bootcamp helped lay the foundation for this project.
