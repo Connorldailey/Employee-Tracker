@@ -266,7 +266,13 @@ class Cli {
                 }))
             }
         ]);
-        await Role.deleteRole(role_id);
+        const employeesWithRole = await Employee.getEmployeesByRoleId(role_id);
+        if (employeesWithRole.length > 0) {
+            console.log(`The selected role cannot be deleted because it is currently assigned to ${employeesWithRole.length} employee(s). Please reassign or remove these employees before deleting the role.`);
+        }
+        else {
+            await Role.deleteRole(role_id);
+        }
     }
     async addDepartment() {
         const { department } = await inquirer.prompt([
@@ -291,7 +297,13 @@ class Cli {
                 }))
             }
         ]);
-        await Department.deleteDepartment(department_id);
+        const rolesWithDepartment = await Role.getRolesByDepartmentId(department_id);
+        if (rolesWithDepartment.length > 0) {
+            console.log(`The selected department cannot be deleted because it is currently assigned to ${rolesWithDepartment.length} role(s). Please reassign or remove these roles before deleting the department.`);
+        }
+        else {
+            await Department.deleteDepartment(department_id);
+        }
     }
 }
 export default Cli;

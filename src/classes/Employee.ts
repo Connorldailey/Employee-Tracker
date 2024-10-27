@@ -114,6 +114,21 @@ class Employee {
         });
     }
 
+    static async getEmployeesByRoleId(role_id: number): Promise<any[]> {
+        const sql = `SELECT * FROM employee WHERE role_id = $1`;
+        const params = [role_id];
+
+        return new Promise((resolve, reject) => {
+            pool.query(sql, params, (err: Error, result: QueryResult) => {
+                if (err) {
+                    console.error('Error fetching employees by role id:', err.message);
+                    return reject(err);
+                }
+                resolve(result.rows);
+            });
+        });
+    }
+
     static async addEmployee(first_name: string, last_name: string, role_id: number, manager_id?: number | null): Promise<void> {
         const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) 
             VALUES ($1, $2, $3, $4);`

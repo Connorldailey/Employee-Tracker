@@ -103,6 +103,19 @@ class Employee {
             });
         });
     }
+    static async getEmployeesByRoleId(role_id) {
+        const sql = `SELECT * FROM employee WHERE role_id = $1`;
+        const params = [role_id];
+        return new Promise((resolve, reject) => {
+            pool.query(sql, params, (err, result) => {
+                if (err) {
+                    console.error('Error fetching employees by role id:', err.message);
+                    return reject(err);
+                }
+                resolve(result.rows);
+            });
+        });
+    }
     static async addEmployee(first_name, last_name, role_id, manager_id) {
         const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) 
             VALUES ($1, $2, $3, $4);`;

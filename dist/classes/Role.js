@@ -19,6 +19,19 @@ class Role {
             });
         });
     }
+    static async getRolesByDepartmentId(department_id) {
+        const sql = `SELECT * FROM role WHERE department_id = $1`;
+        const params = [department_id];
+        return new Promise((resolve, reject) => {
+            pool.query(sql, params, (err, result) => {
+                if (err) {
+                    console.error('Error fetching roles by department id:', err.message);
+                    return reject(err);
+                }
+                resolve(result.rows);
+            });
+        });
+    }
     static async addRole(title, salary, department_id) {
         const sql = `INSERT INTO role (title, salary, department_id) VALUES
             ($1, $2, $3)`;
