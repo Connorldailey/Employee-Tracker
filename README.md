@@ -1,4 +1,4 @@
-# Module 10 Challenge - Employee Tracker
+# Employee Tracker CLI
 
 ![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
